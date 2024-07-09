@@ -1,5 +1,6 @@
 package com.rony.study.aop
 
+import com.rony.study.config.MessageConstants
 import jakarta.servlet.http.HttpServletRequest
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
@@ -20,7 +21,9 @@ class LogAspect {
     @Around("within(com.rony.study.controller..*)")
     fun logging(joinPoint: ProceedingJoinPoint): Any? {
         val request: HttpServletRequest = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
+
         val messageId = UUID.randomUUID().toString()
+        request.setAttribute(MessageConstants.MESSAGE_ID, messageId)
 
         val startAt = LocalDateTime.now()
         val param = AopLog.from(request, joinPoint.args, messageId)

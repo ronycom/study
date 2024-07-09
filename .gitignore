@@ -1,9 +1,7 @@
 # Ignore Gradle project-specific files
 .gradle/
-.idea/
-
-# Ignore build output directories
 build/
+.idea/
 
 # Compiled class file
 *.class

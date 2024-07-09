@@ -1,6 +1,7 @@
 package com.rony.study.domain.entity
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -22,5 +23,6 @@ data class LottoMain(
     val bonusNo: Int,
 ) {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     val idx: Long = 0
 }

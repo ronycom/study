@@ -23,6 +23,7 @@ class LogAspect {
         val request: HttpServletRequest = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
 
         val messageId = UUID.randomUUID().toString()
+        
         request.setAttribute(MessageConstants.MESSAGE_ID, messageId)
 
         val startAt = LocalDateTime.now()

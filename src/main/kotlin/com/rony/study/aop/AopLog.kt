@@ -1,5 +1,6 @@
 package com.rony.study.aop
 
+import com.rony.study.util.HttpRequestUtil
 import jakarta.servlet.http.HttpServletRequest
 
 data class AopLog(
@@ -19,7 +20,7 @@ data class AopLog(
                 requestUrl = request.requestURL.toString(),
                 requestUri = request.requestURI,
                 method = request.method,
-                ip = request.remoteAddr,
+                ip = HttpRequestUtil.getClientIp(request),
                 data = parameters.joinToString()
             )
         }

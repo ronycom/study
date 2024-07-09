@@ -1,5 +1,6 @@
 # Ignore Gradle project-specific files
 .gradle/
+.idea/
 
 # Ignore build output directories
 build/

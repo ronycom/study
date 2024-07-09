@@ -40,13 +40,17 @@ class LottoController(private val lottoService: LottoService) {
 
     @InternalApi
     @PostMapping("/all")
-    fun setLottoNoAll() {
+    fun setLottoNoAll(): ResponseEntity<Unit> {
         lottoService.initializeLottoMainDatas()
+
+        return ResponseEntity.ok().build()
     }
 
     @InternalApi
     @PostMapping("/{drawNo}")
-    fun setLottoNo(@PathVariable drawNo : Int) {
+    fun setLottoNo(@PathVariable drawNo: Int): ResponseEntity<Unit> {
         lottoService.setLottoData(drawNo)
+
+        return ResponseEntity.ok().build()
     }
 }

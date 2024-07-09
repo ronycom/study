@@ -1,9 +1,6 @@
 package com.rony.study.aop
 
-import com.sun.management.UnixOperatingSystemMXBean
 import jakarta.servlet.http.HttpServletRequest
-import lombok.RequiredArgsConstructor
-import lombok.extern.slf4j.Slf4j
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -11,33 +8,29 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
-import java.lang.management.ManagementFactory
-import java.lang.management.OperatingSystemMXBean
-import java.util.*
+import java.time.Duration
+import java.time.LocalDateTime
+import java.util.UUID
 
-@RequiredArgsConstructor
-@Component
 @Aspect
+@Component
 class LogAspect {
     private val log = LoggerFactory.getLogger(this.javaClass)
 
     @Around("within(com.rony.study.controller..*)")
-    @Throws(Throwable::class)
-    fun requestLog(proceedingJoinPoint: ProceedingJoinPoint): Any {
+    fun logging(joinPoint: ProceedingJoinPoint): Any? {
+        val request: HttpServletRequest = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
         val messageId = UUID.randomUUID().toString()
 
-        log.info("messageId : " + messageId + " request : " + proceedingJoinPoint.args.contentToString())
+        val startAt = LocalDateTime.now()
+        val param = AopLog.from(request, joinPoint.args, messageId)
+        log.info("Start messageId: $messageId \n Start At: $startAt \n Param: $param")
 
-        val startTime = System.currentTimeMillis() // Aspect 시작 시간 기록
+        val proceed = joinPoint.proceed()
 
-        val result = proceedingJoinPoint.proceed()
+        val endAt = LocalDateTime.now()
+        log.info("End messageId: $messageId \n End At: $startAt Duration: ${Duration.between(startAt, endAt).toMillis()}ms")
 
-        val endTime = System.currentTimeMillis() // Aspect 종료 시간 기록
-
-        val executionTime = endTime - startTime // 실행 시간 계산
-
-        log.info("messageId : " + messageId + " - Duration time : " + executionTime + "ms")
-
-        return result
+        return proceed
     }
 }

@@ -49,7 +49,7 @@ class LottoService(private val lottoMainRepoService: LottoMainRepoService,
         val apiUrl      = constProperties.lottoApiUrl + drawNo
 
         val lottoSyncDto = getApiLottoServer(apiUrl)
-
+        
         if(lottoSyncDto.returnValue == "success") {
             lottoMainRepoService.deleteByDrawNo(drawNo)
             lottoMainRepoService.save(lottoSyncDto.toLottoMain())
